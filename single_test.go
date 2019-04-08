@@ -11,7 +11,7 @@ func TestRun(t *testing.T) {
 
 	for i := 0; i < 5; i++ {
 		time.Sleep(time.Second * 3)
-		ok := IsSingle("__yourTest___")
+		ok := CurrentProcessIsSingle("__yourTest___")
 		if ok {
 			fmt.Printf("current process is only single, can run now %v\n", time.Now().String())
 		} else {

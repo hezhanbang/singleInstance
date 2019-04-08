@@ -17,7 +17,13 @@ func HelloTest() {
 }
 
 //CurrentProcessIsSingle is fun
-func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
+func CurrentProcessIsSingle(singleKey, lockFileName string) (singling bool, err error) {
+	if "" == lockFileName {
+		lockFileName = "lock.txt"
+	}
+	if len(lockFileName) < 5 || len(lockFileName) > 20 {
+		return false, fmt.Errorf("invalid length of lockFileName")
+	}
 	if len(singleKey) < 5 || len(singleKey) > 20 {
 		return false, fmt.Errorf("invalid length of singleKey")
 	}
@@ -31,7 +37,7 @@ func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 
 	//we get new locker, update time to file
 	exeDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	file, err := os.OpenFile(exeDir+"\\pid.txt", os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
+	file, err := os.OpenFile(exeDir+"\\"+lockFileName, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
 	if err != nil {
 		return false, fmt.Errorf("can not open pid.txt file")
 	}

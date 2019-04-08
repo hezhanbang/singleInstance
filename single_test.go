@@ -11,9 +11,9 @@ func TestRun(t *testing.T) {
 
 	for i := 0; i < 5; i++ {
 		time.Sleep(time.Second * 3)
-		single, err := CurrentProcessIsSingle("__yourTest___")
+		single, err := CurrentProcessIsSingle("__yourTest___", "")
 		if err != nil {
-			fmt.Printf("fail to do CurrentProcessIsSingle, err=%s\n, err)
+			fmt.Printf("fail to do CurrentProcessIsSingle, err=%s\n", err)
 			return
 		}
 

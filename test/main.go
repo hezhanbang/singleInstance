@@ -11,7 +11,7 @@ func main() {
 	fmt.Println("start...")
 	for i := 0; i < 9; i++ {
 		time.Sleep(time.Second * 9)
-		canRun, err := singleInstance.CurrentProcessIsSingle("__yourTest_2__")
+		canRun, err := singleInstance.CurrentProcessIsSingle("__yourTest_2__", "")
 		if err != nil {
 			fmt.Printf("fail to check single, err=%s\n", err)
 			time.Sleep(time.Hour)

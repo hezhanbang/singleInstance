@@ -17,30 +17,75 @@ func HelloTest() {
 }
 
 //CurrentProcessIsSingle is fun
-func CurrentProcessIsSingle(singleKey string) bool {
-	exeDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-
-	file, err := os.OpenFile(exeDir+"/pid.txt", gFlag, 0666)
-	if err != nil {
-		return false
+func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
+	if len(singleKey) < 5 || len(singleKey) > 20 {
+		return false, fmt.Errorf("invalid length of singleKey")
 	}
 
-	gFlag = os.O_CREATE | os.O_RDWR
+	//open locker file
+	exeDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	file, err := os.OpenFile(exeDir+"/pid.txt", os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		return false, fmt.Errorf("can not open pid.txt file")
+	}
 
-	if false == lockedByThis {
-		err = syscall.Flock(int(file.Fd()), syscall.LOCK_EX|syscall.LOCK_NB)
-		if err != nil {
+	//check locked
+	locked, newLocker := locked(file)
+
+	//close locker file
+	{
+		if false == locked {
+			//fail to get locker, we must to close locker file
 			file.Close()
 			file = nil
 
-			lockedByThis = false
-			return false //return
+			singling = false
+			err = nil
+			return
 		}
-		lockedByThis = true
+		if false == newLocker {
+			//we have got locker early before this call 'locked(file)', we just need to close locker file
+			file.Close()
+			file = nil
+
+			singling = true
+			err = nil
+			return
+		}
 	}
 
+	//we get new locker, update time to file
 	file.Truncate(0)
 	data := fmt.Sprintf("[%s] [pid=%d]\n", time.Now().String(), os.Getpid())
 	file.WriteString(data)
-	return true
+
+	//do not close locker file
+
+	singling = true
+	err = nil
+	return
+}
+
+func locked(file *os.File) (locked, newLocker bool) {
+	if false == lockedByThis {
+		err := syscall.Flock(int(file.Fd()), syscall.LOCK_EX|syscall.LOCK_NB)
+		if nil == err {
+			//get new locker
+			lockedByThis = true
+			locked = true
+			newLocker = true
+		} else {
+			////fail to get locker
+			lockedByThis = false
+			locked = false
+			newLocker = false
+		}
+
+		return
+	}
+
+	//we have keep this locker
+	locked = true
+	newLocker = false
+	return
 }

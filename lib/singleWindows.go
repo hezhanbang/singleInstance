@@ -17,34 +17,34 @@ func HelloTest() {
 }
 
 //CurrentProcessIsSingle is fun
-func CurrentProcessIsSingle(singleKey string) (singling, ok bool) {
+func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 	if len(singleKey) < 5 || len(singleKey) > 20 {
-		return false, false
+		return false, fmt.Errorf("invalid length of singleKey")
 	}
 	locked, newLocker := locked(singleKey)
 	if !locked {
-		return false, true
+		return false, nil
 	}
 	if !newLocker {
-		return true, true
+		return true, nil
 	}
 
 	//we get new locker, update time to file
 	exeDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	file, err := os.OpenFile(exeDir+"\\pid.txt", os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
 	if err != nil {
-		return false, false
+		return false, fmt.Errorf("can not open pid.txt file")
 	}
 
 	data := fmt.Sprintf("[%s] [pid=%d]\n", time.Now().String(), os.Getpid())
 	n, err := file.WriteString(data)
 	if err != nil || n != len(data) {
-		return true, false
+		return true, fmt.Errorf("can not write string to pid.txt file")
 	}
 
 	file.Close()
 	file = nil
-	return true, true
+	return true, nil
 }
 
 func locked(key string) (locked, newLocker bool) {

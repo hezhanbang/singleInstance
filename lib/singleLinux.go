@@ -32,29 +32,27 @@ func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 	//check locked
 	locked, newLocker := locked(file)
 
-	//close locker file
-	{
-		if false == locked {
-			//fail to get locker, we must to close locker file
-			file.Close()
-			file = nil
+	if false == locked || false == newLocker {
+		// fail to get locker,
+		// or we have got locker early before this call 'locked(file)'.
+		//
+		// so we must to close locker file
+		file.Close()
+		file = nil
 
+		if false == locked {
 			singling = false
 			err = nil
 			return
 		}
 		if false == newLocker {
-			//we have got locker early before this call 'locked(file)', we just need to close locker file
-			file.Close()
-			file = nil
-
 			singling = true
 			err = nil
 			return
 		}
 	}
 
-	//we get new locker, update time to file
+	//we get NEW locker, update time to file
 	file.Truncate(0)
 	data := fmt.Sprintf("[%s] [pid=%d]\n", time.Now().String(), os.Getpid())
 	file.WriteString(data)

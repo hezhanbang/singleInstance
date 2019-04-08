@@ -10,7 +10,7 @@ cp lib/singleLinux.go single.go
 retVal=$?
 if [ $retVal -ne 0 ]
 then
-    echo "fail to do preBuild.sh in lib [SingleInstance]!"
+    echo "fail to do preBuild.sh in lib [singleInstance]!"
     exit 2
 fi
 

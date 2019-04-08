@@ -1,4 +1,4 @@
-package SingleInstance
+package singleInstance
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ var lockedByThis = false
 
 //HelloTest is fun
 func HelloTest() {
-	fmt.Printf("SingleInstance say hello to you!\n")
+	fmt.Printf("singleInstance say hello to you!\n")
 }
 
 //CurrentProcessIsSingle is fun

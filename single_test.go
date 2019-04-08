@@ -1,4 +1,4 @@
-package SingleInstance
+package singleInstance
 
 import (
 	"fmt"

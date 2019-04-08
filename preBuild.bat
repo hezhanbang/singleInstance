@@ -10,6 +10,6 @@ if %errorlevel% neq 0 goto ERROR
 exit /b 0
 
 :ERROR
-echo "fail to do preBuild.bat in lib [SingleInstance]!"
+echo "fail to do preBuild.bat in lib [singleInstance]!"
 cd /d %workDir%
 exit /b 1

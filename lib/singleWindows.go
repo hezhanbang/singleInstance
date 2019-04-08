@@ -42,8 +42,8 @@ func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 		return true, fmt.Errorf("can not write string to pid.txt file")
 	}
 
-	file.Close()
-	file = nil
+	//do not close locker file
+
 	return true, nil
 }
 

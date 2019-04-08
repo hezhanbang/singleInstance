@@ -8,7 +8,6 @@ import (
 	"time"
 )
 
-var gFlag = os.O_CREATE | os.O_RDWR | os.O_TRUNC
 var lockedByThis = false
 
 //HelloTest is fun
@@ -55,7 +54,10 @@ func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 	//we get NEW locker, update time to file
 	file.Truncate(0)
 	data := fmt.Sprintf("[%s] [pid=%d]\n", time.Now().String(), os.Getpid())
-	file.WriteString(data)
+	n, err := file.WriteString(data)
+	if err != nil || n != len(data) {
+		return true, fmt.Errorf("can not write string to pid.txt file")
+	}
 
 	//do not close locker file
 

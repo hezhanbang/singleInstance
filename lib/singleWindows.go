@@ -67,7 +67,7 @@ func locked(key string) (locked, newLocker bool) {
 			uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(key))),
 		)
 
-		fmt.Printf("CreateMutexW, handle=%d errInt=%d errStr=%v [singleInstance]\n", handle, int(err.(syscall.Errno)), err)
+		//fmt.Printf("CreateMutexW, handle=%d errInt=%d errStr=%v [singleInstance]\n", handle, int(err.(syscall.Errno)), err)
 
 		//check return val and last err
 		if 0 == int(err.(syscall.Errno)) {

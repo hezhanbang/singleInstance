@@ -105,7 +105,7 @@ int hebCurrentProcessIsSingle(const char* singleKey, const char* lockFileName) {
 	localtime_s(&tiM, &t);
 
 	std::ostringstream oss;
-	oss << std::put_time(&tiM, "%d-%m-%Y %H-%M-%S");
+	oss << std::put_time(&tiM, "%Y-%m-%d %H:%M:%S");
 	std::string timeStr = oss.str();
 
 	fprintf(pf, "[%s] [pid=%d]\n", timeStr.c_str(), ::GetCurrentProcessId());

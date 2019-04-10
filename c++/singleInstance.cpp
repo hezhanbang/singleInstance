@@ -21,7 +21,7 @@ void hebSingleLocked(const char* key, bool &locked, bool &newLocker) {
 			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 			(LPSTR)&strErr, 0, NULL);
 
-		fprintf(stdout, "CreateMutexA, handle=%d errInt=%d errStr=%s [singleInstance]\n", handle, err, strErr);
+		//fprintf(stdout, "CreateMutexA, handle=%d errInt=%d errStr=%s [singleInstance]\n", handle, err, strErr);
 		LocalFree(strErr);
 
 		//check return val and last err

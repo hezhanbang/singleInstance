@@ -1,6 +1,10 @@
 #include "stdafx.h"  //不能写成真实的文件相对路径。
 #include <Windows.h>
 #include <string>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <ctime>
 #include "singleInstance.h"
 
 bool gHeblockedByThis_single = false;
@@ -96,7 +100,16 @@ int hebCurrentProcessIsSingle(const char* singleKey, const char* lockFileName) {
 		return -6;
 	}
 
-	fprintf(pf, "[pid=%d]\n", ::GetCurrentProcessId());
+	auto t = std::time(nullptr);
+	struct tm tiM;
+	localtime_s(&tiM, &t);
+
+	std::ostringstream oss;
+	oss << std::put_time(&tiM, "%d-%m-%Y %H-%M-%S");
+	std::string timeStr = oss.str();
+
+	fprintf(pf, "[%s] [pid=%d]\n", timeStr.c_str(), ::GetCurrentProcessId());
+	fflush(pf);
 
 	//do not close locker file
 	return HEB_SINGLE__SINGLING;

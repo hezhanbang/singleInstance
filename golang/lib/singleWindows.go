@@ -48,7 +48,14 @@ func CurrentProcessIsSingle(singleKey, lockFileName string) (singling bool, err 
 		return true, fmt.Errorf("can not write string to pid.txt file")
 	}
 
-	//do not close locker file
+	//hold locker file
+	go func() {
+		for {
+			data := make([]byte, 8)
+			file.ReadAt(data, 0)
+			time.Sleep(time.Minute)
+		}
+	}()
 
 	return true, nil
 }

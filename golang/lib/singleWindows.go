@@ -53,7 +53,7 @@ func CurrentProcessIsSingle(singleKey, lockFileName string) (singling bool, err 
 		for {
 			data := make([]byte, 8)
 			file.ReadAt(data, 0)
-			time.Sleep(time.Minute)
+			time.Sleep(time.Hour)
 		}
 	}()
 

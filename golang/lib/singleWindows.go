@@ -37,7 +37,7 @@ func CurrentProcessIsSingle(singleKey, lockFileName string) (singling bool, err 
 
 	//we get new locker, update time to file
 	exeDir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	file, err := os.OpenFile(exeDir+"\\"+lockFileName, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0666)
+	file, err := os.OpenFile(exeDir+"\\"+lockFileName, os.O_CREATE|os.O_RDWR/*|os.O_TRUNC*/, 0666)
 	if err != nil {
 		return false, fmt.Errorf("can not open pid.txt file")
 	}

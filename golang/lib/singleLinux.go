@@ -52,7 +52,7 @@ func CurrentProcessIsSingle(singleKey string) (singling bool, err error) {
 	}
 
 	//we get NEW locker, update time to file
-	file.Truncate(0)
+	//file.Truncate(0)
 	data := fmt.Sprintf("[%s] [pid=%d]\n", time.Now().String(), os.Getpid())
 	n, err := file.WriteString(data)
 	if err != nil || n != len(data) {

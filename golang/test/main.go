@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/liyoubdu/singleInstance"
+	"github.com/liyoubdu/singleInstance/golang"
 )
 
 func main() {

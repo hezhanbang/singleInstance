@@ -24,7 +24,7 @@ func CurrentProcessIsSingle(singleKey, lockFileName string) (singling bool, err 
 	if len(lockFileName) < 5 || len(lockFileName) > 20 {
 		return false, fmt.Errorf("invalid length of lockFileName")
 	}
-	if len(singleKey) < 5 || len(singleKey) > 20 {
+	if len(singleKey) < 5 || len(singleKey) > 30 {
 		return false, fmt.Errorf("invalid length of singleKey")
 	}
 	locked, newLocker := locked(singleKey)

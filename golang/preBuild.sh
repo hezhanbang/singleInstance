@@ -22,6 +22,8 @@ workDir=$(pwd)
 singleDir=$(dirname $(readlink -f $0))
 cd $singleDir
 
+chmod +x preBuild.sh
+
 if [ -n "$DST_DIR" ]; then
 	rm -rf $DST_DIR
 	mkdir -p $DST_DIR
